@@ -1,0 +1,4 @@
+festflow
+*.o
+*.dSYM
+.DS_Store

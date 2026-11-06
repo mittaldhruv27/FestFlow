@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FestFlow // Pure C++ DSA Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- SVG Liquid Glass Refraction Filter (High-Displacement Liquid Caustic) -->
+  <svg width="0" height="0" style="position: absolute; width: 0; height: 0; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="lg" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.016 0.022" numOctaves="2" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Opening Metaballs Transition Overlay with Centered FestFlow. Logo -->
+  <div id="intro-splash" class="intro-splash">
+    <video id="splash-video" autoplay muted playsinline loop>
+      <source src="orbiting_metaballs.mp4" type="video/mp4">
+    </video>
+    <div class="splash-logo-container">
+      <h1 class="splash-logo">FestFlow<span class="splash-dot"></span></h1>
+    </div>
+  </div>
+
+  <!-- Main Application Workspace -->
+  <div class="app-container" id="app-container">
+    
+    <!-- LEFT SIDEBAR: ACTION TILES OR 11 STRUCTURES -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <h1 class="brand-title">FestFlow<span class="brand-dot"></span></h1>
+      </div>
+
+      <!-- Action Mode Menu (No Emojis) -->
+      <div class="menu-view active" id="actions-menu">
+        <button class="tile-btn active" data-action="scan">
+          <span class="btn-text">Scan Entry Ticket</span>
+        </button>
+        <button class="tile-btn" data-action="book">
+          <span class="btn-text">Book Event Slot</span>
+        </button>
+        <button class="tile-btn" data-action="dag">
+          <span class="btn-text">Event Prerequisites</span>
+        </button>
+        <button class="tile-btn" data-action="emergency">
+          <span class="btn-text">Dispatch VIP Emergency</span>
+        </button>
+        <button class="tile-btn" data-action="judge">
+          <span class="btn-text">Allocate Judge</span>
+        </button>
+        <button class="tile-btn" data-action="score">
+          <span class="btn-text">Post Hackathon Score</span>
+        </button>
+        <button class="tile-btn" data-action="crowd">
+          <span class="btn-text">Crowd Sector Influx</span>
+        </button>
+        <button class="tile-btn" data-action="trie">
+          <span class="btn-text">Attendee Search</span>
+        </button>
+        <button class="tile-btn" data-action="suffix">
+          <span class="btn-text">Rulebook Search</span>
+        </button>
+        <button class="tile-btn" data-action="undo">
+          <span class="btn-text">Undo Last Action</span>
+        </button>
+
+        <div class="menu-divider"></div>
+
+        <button class="tile-btn mode-switch-btn" id="btn-explore-structures">
+          <span class="btn-text">Browse Structures (1-11) &rarr;</span>
+        </button>
+
+        <button class="tile-btn stress-btn" id="btn-stress-test">
+          <span class="btn-text">Run 2,000-Node Stress Test</span>
+        </button>
+      </div>
+
+      <!-- Structure Mode Menu (Revealed when switching) -->
+      <div class="menu-view" id="structures-menu">
+        <button class="tile-btn back-btn" id="btn-back-actions">
+          <span class="btn-text">&larr; Back to Actions</span>
+        </button>
+        
+        <div class="structure-list-header">All 11 Data Structures</div>
+        
+        <button class="tile-btn struct-btn" data-struct="hashtable">
+          <span class="btn-idx">1</span>
+          <span class="btn-text">Hash Table (Chaining)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="bloom">
+          <span class="btn-idx">2</span>
+          <span class="btn-text">Bloom Filter (Bit Array)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="dag">
+          <span class="btn-idx">3</span>
+          <span class="btn-text">Event DAG (Prereqs)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="interval">
+          <span class="btn-idx">4</span>
+          <span class="btn-text">Interval Tree (Clashes)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="segment">
+          <span class="btn-idx">5</span>
+          <span class="btn-text">Segment Tree (Capacities)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="heap">
+          <span class="btn-idx">6</span>
+          <span class="btn-text">Max-Heap (Priority Queue)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="cqueue">
+          <span class="btn-idx">7</span>
+          <span class="btn-text">Circular Queue (Judges)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="avl">
+          <span class="btn-idx">8</span>
+          <span class="btn-text">AVL Tree (Leaderboard)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="trie">
+          <span class="btn-idx">9</span>
+          <span class="btn-text">Trie (Prefix Search)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="suffix">
+          <span class="btn-idx">10</span>
+          <span class="btn-text">Suffix Array (Rulebook)</span>
+        </button>
+        <button class="tile-btn struct-btn" data-struct="dll">
+          <span class="btn-idx">11</span>
+          <span class="btn-text">Doubly Linked List (Undo)</span>
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="live-dot"></span> C++ Engine: Active (RAM Only)
+      </div>
+    </aside>
+
+    <!-- RIGHT STAGE: EXPANSIVE DSA VISUALIZER CANVAS -->
+    <main class="stage">
+      <div class="canvas-card" id="canvas-card">
+        
+        <!-- Header Bar on Canvas -->
+        <div class="canvas-header">
+          <div class="canvas-title-group">
+            <span class="canvas-action-tag" id="canvas-action-tag">Action: Scan Entry Ticket</span>
+            <span class="canvas-ds-badge" id="canvas-ds-badge">Bloom Filter + Hash Table</span>
+          </div>
+          <div class="canvas-metrics" id="canvas-metrics">
+            <span class="metric-pill">RAM: <strong>4.8 MB</strong></span>
+            <span class="metric-pill">Nodes: <strong id="metric-nodes">2,000</strong></span>
+          </div>
+        </div>
+
+        <!-- Dynamic Visualization Container with Interactive Form -->
+        <div class="canvas-body" id="canvas-body">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+
+        <!-- Telemetry Status Bar -->
+        <footer class="telemetry-bar">
+          <div class="telemetry-badge">TELEMETRY</div>
+          <div class="telemetry-text" id="telemetry-text">
+            [Bloom Filter] Ready for real-time ticket scanning.
+          </div>
+        </footer>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
